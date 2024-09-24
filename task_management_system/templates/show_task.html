@@ -1,0 +1,48 @@
+{% extends "base.html" %} {% block title %}Show Task{% endblock title %}
+{% block content %}
+
+<h1 class="text-center mt-5 text-decoration-underline">Show Task</h1>
+
+<div class="container my-5">
+    {% if data %}
+        <div class="row">
+            {% for i in data %}
+            <div class="col-sm-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header d-flex justify-content-between pb-0">
+                        <p class="fw-semibold">ID : {{i.id}}</p>
+                        <p class="fw-semibold">Date : {{i.assign_date}} </p>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{i.title}} </h5>
+                        <p class="card-text"><span class="fw-semibold text-decoration-underline">Description</span> <br>{{i.description}}</p>
+                        <p class="card-text"><span class="fw-semibold">Category :</span>
+                            {% for ctg in i.category.all %}
+                                <span class="bg-body-secondary px-2 py-1 rounded">{{ctg.name}}</span>
+                            {% endfor %}
+                        </p>
+                    </div>
+                    {% if i.is_completed is True %}
+                        <div class="card-footer bg-transparent">
+                            <div class="d-grid">
+                                <button class="btn btn-success disabled btn-sm" type="button">Completed</button>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="card-footer bg-transparent">
+                            <div class="d-flex justify-content-between">
+                                <a href=" {% url "edit_task" i.id %} " type="button" class="btn btn-warning btn-sm px-3">Edit</a>
+                                <a href=" {% url "delete_task" i.id %} " type="button" class="btn btn-danger btn-sm">Delete</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <h1 class="display-2 text-center">No Task Available To Show!</h1>
+    {% endif %}
+</div>
+
+{% endblock content %}
